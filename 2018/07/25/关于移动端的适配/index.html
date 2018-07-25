@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    关于移动端的适配 | 火辣辣的二毛
+  </title>
+  <meta name="description" content="vegetable bird">
+  
+  <meta name="keywords" content="
+  
+  ">
+  
+  <meta name="author" content="Sommer">
+
+  <meta http-equiv="Cache-Control" content="no-transform"/>
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+  <link rel="icon" type="image/x-icon" href="https://sirllight.github.io/img/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="https://sirllight.github.io/img/avatar.png"> <i class="fa fa-caret-down"></i></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i
+                  class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives"
+           class="header-toolbar-right"> 3 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i
+                  class="fa fa-tags"></i> Tags </a>
+        <a href="/tags"
+           class="header-toolbar-right"> 3 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">火辣辣的二毛</a>
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    Sommer
+
+    <span class="post-date float-right" title="{{moment(1532527976000).format('MMM DD, YYYY, h:mm:ss A')}}">
+      <i class="fa fa-pencil-square-o"></i>
+      {{moment(1532527976000).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>关于移动端的适配</h1>
+    <p>pc有兼容，移动端有适配。适配，就是在不同尺寸的设备里，网页内容能合理地展示（自适应）或者保持相同效果的同比缩放展示。这半年做了两次h5活动，对适配有了些理解，就在这里归纳一下~</p>
+<h3 id="为什么要做适配"><a href="#为什么要做适配" class="headerlink" title="为什么要做适配"></a>为什么要做适配</h3><p>拿出你们的大手机，相互对比一下，大概看得出有的大手机是真的大，有的大手机就不那么大，更何况还有pad这种异常大的移动便携设备，那么我们开发拿着一份设计稿，怎样才能用一份代码去保证我们做出来的网页在这不同品种尺寸的设备上能合理地显示呢？<br>这个问题就是我们做适配的原因。</p>
+<h3 id="所见≠所得————关于视口-viewport"><a href="#所见≠所得————关于视口-viewport" class="headerlink" title="所见≠所得————关于视口(viewport)"></a>所见≠所得————关于视口(viewport)</h3><p>在reset.css里面会把html、body的宽高设置成100%，而100%这个值是继承自父级，那么html的父级是什么呢？</p>
+<p>在PC浏览器中，有一个用来约束CSS布局视口的东西，又叫做初始包含块。这也就是所有宽高继承的由来。除去margin、padding，布局视口和浏览器可视窗口宽度是一致的，同时也和浏览器本身的宽度一致。但是，在移动端就不一样了，看个示例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">* &#123;</span><br><span class="line">    margin: 0;</span><br><span class="line">    padding: 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">html,</span><br><span class="line">body &#123;</span><br><span class="line">    height: 100%;</span><br><span class="line">    width: 100%;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.left &#123;</span><br><span class="line">    float: left;</span><br><span class="line">    width: 20%;</span><br><span class="line">    height: 100%;</span><br><span class="line">    background: pink;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.right &#123;</span><br><span class="line">    float: right;</span><br><span class="line">    width: 80%;</span><br><span class="line">    height: 100%;</span><br><span class="line">    background: rgb(192, 255, 226);</span><br><span class="line">&#125;</span><br><span class="line">------</span><br><span class="line">&lt;div class=&quot;left&quot;&gt;&lt;/div&gt;</span><br><span class="line">&lt;div class=&quot;right&quot;&gt;&lt;/div&gt;</span><br></pre></td></tr></table></figure></p>
+<p>一个常见的左右布局，在pc没什么好说的，很完美，但是在移动端，就有些不一样了<br><img src="https://sirlLight.github.io/img/h5/demo1.png" alt="demo1"><br>看！！明明设备宽高375x667，但是body的宽高居然是980x1739，震惊！</p>
+<p>其实这个980x1739就是移动端的布局视口（layout viewport）了。</p>
+<p>在移动端，默认的情况下，布局视口的宽度是要远远大于浏览器的宽度的。这两个视口不同于PC端，是相互独立存在的。为什么呢？试想一下，如果一个网页不对移动端进行适配，用户进行阅读的时候，如果默认情况下布局视口的宽度等于浏览器宽度，那是不是展示起来更加的不友好。也就是说，如果一个div的宽度为20%，那么它在布局视口宽度为980px的时候，展示给用户的像素还有196px，而如果宽度只有375px的情况下，宽度只有75px，展示的大小相差特别大。</p>
+<p>所以，浏览器厂商为了让用户在小屏幕下网页也能够显示地很好，所以把布局视口宽度设置地很大，一般在768px ~ 1024px之间，最常见的宽度是980px。这个宽度可以通过document.documentElement.clientWidth得到。</p>
+<p>layout viewport的宽度是大于浏览器可视区域的宽度的，所以我们还需要一个viewport来代表浏览器可视区域的大小，这个viewport叫做视觉视口（visual viewport）。visual viewport的宽度可以通过window.innerWidth来获取，即屏幕的宽度。附一张图更好理解<br><img src="https://sirlLight.github.io/img/h5/demo2.png" alt="demo2"></p>
+<p>显然，这两个viewport对于移动端来讲十分不友好，完全忽略了手机本来的尺寸，所以苹果引进了理想视口（ideal viewport）的概念，理想视口的意思就是指使得布局视口跟视觉视口相等，于是就有了下面这行代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1&quot;&gt;</span><br></pre></td></tr></table></figure></p>
+<p>width=device-width：这句代码可以把布局视口设置成为浏览器（屏幕）的宽度。</p>
+<p>initial-scale=1：它的意思是初始缩放的比例是1，使用它的时候，同时也会将布局视口的尺寸设置为缩放后的尺寸。而缩放的尺寸就是基于屏幕的宽度来的，也就起到了和width=device-width同样的效果。</p>
+<p>这行代码使得上面那个左右布局的body宽高等于屏幕的宽高。</p>
+<p>另外，值得一提的是，我们在进行媒体查询的时候，查询的宽度值其实也是布局视口的宽度值。</p>
+<h3 id="我的高清无码嘞————关于Retina屏和普通屏，模糊的由来"><a href="#我的高清无码嘞————关于Retina屏和普通屏，模糊的由来" class="headerlink" title="我的高清无码嘞————关于Retina屏和普通屏，模糊的由来"></a>我的高清无码嘞————关于Retina屏和普通屏，模糊的由来</h3><p>在设置了理想视口之后，我们在一部手机上显示没问题之后，往往换一部手机就出现了很大的问题，“卧槽，这个字怎么辣么大！！这个图怎么糊成这个鬼样子了！！！blablabla”，这些问题就跟设备的屏幕和css像素有关啦。</p>
+<p>这时候就需要了解一个概念————设备像素比（dpr），这个东西是一个比值，可以通过window.devicePixelRatio来获取。</p>
+<p>设备像素比 = 设备物理像素 / 设备独立像素 （只针对一个方向，x/y方向）</p>
+<p>设备物理像素，顾名思义，不解释。</p>
+<p>设备独立像素，这个东西就有点玄了，官方解释是：独立于设备的用于逻辑上衡量像素的单位。。。。懵逼吧，其实他妈的就是css像素！惊不惊喜（手动滑稽）只不过css像素是我们编程用的~~~</p>
+<p>这样讲大概就明白了吧，举个例子醍醐灌顶一下：<br>iPhone6的dpr是2，也就是说 iPhone6的物理像素/css像素=2，即iphone6上用了2个物理像素来展示1个css像素。</p>
+<h4 id="Retina屏幕"><a href="#Retina屏幕" class="headerlink" title="Retina屏幕"></a>Retina屏幕</h4><p>一般来讲，普通屏幕都是一个萝卜一个坑，一个物理像素显示一个css像素，单位长度内像素越多，分辨率越高，图像的效果越好。这就导致有一个错觉就是，屏幕尺寸越大，分辨率就越大，图像效果越好。但是苹果出了个高清屏（Retina），角度刁钻，它的像素密度比普通屏幕高，像素密度的意思就是每英寸所拥有的像素数量。给两个图大家感受一下：<br><img src="https://sirlLight.github.io/img/h5/demo3.png" alt="demo3"><br>关于屏幕的事，不多讲，我又不买新设备（呵呵）</p>
+<h4 id="模糊的原因"><a href="#模糊的原因" class="headerlink" title="模糊的原因"></a>模糊的原因</h4><p>Retina屏幕的出现就会导致图像效果出现异常。<br>理论上，1个位图像素对应于1个物理像素，图片才能得到完美清晰的展示（全保真）。但是如iphone6的Retina屏幕下，她的dpr为2，即在它的屏幕上，一个css像素由2个物理像素来显示。本来是一个“口”字，结果变成了“田”字，相当于放大的4倍（x、y方向各放大两倍），有了4个像素点，这就导致在Retina屏幕下就会出现位图像素点不够，从而导致图片模糊的情况。</p>
+<p>举个例子，看图：<br><img src="https://sirlLight.github.io/img/h5/demo5.png" alt="demo5"></p>
+<p>如上图：对于dpr=2的Retina屏幕而言，1个位图像素对应于4个物理像素，由于单个位图像素不可以再进一步分割，所以只能就近取色，从而导致图片模糊(注意上述的几个颜色值)。</p>
+<h4 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h4><p>很明显，由于位图像素不够分而产生模糊的情况，解决的办法十分简单，就是使用跟dpr同个倍数大小的图片。图片本身放大两倍，放在一个50%容器里。比如iphone6，一个200x300的img标签，原图就要提供400x600的大小，即两倍图片(@2x)。</p>
+<p>那么当加载到img标签中，浏览器会自动对每1px的css像素减半，可以理解为此时还是维持着1:1的css像素:物理像素，不产生模糊。</p>
+<h3 id="设计师说：这个线怎么那么粗！————关于border-1px"><a href="#设计师说：这个线怎么那么粗！————关于border-1px" class="headerlink" title="设计师说：这个线怎么那么粗！————关于border: 1px"></a>设计师说：这个线怎么那么粗！————关于border: 1px</h3><p>首先看图，在非Retina和Retina屏下css像素为1px的border：<br><img src="https://sirlLight.github.io/img/h5/demo6.png" alt="demo6"><br>看到了吗！！！设计师想要的1px border其实在Retina屏里占据的是2个物理像素，所以看起来就很粗，在Retina屏需要的是css像素为0.5px。。。<br>因为Retina屏和普通屏的区别，所以1px的border看起来像是2px的（在dpr=2的屏幕下）。像素眼的测试和设计师就会来逼逼叨= =</p>
+<p>然而Retina屏的浏览器可能不认识0.5px的边框，将会把它解释成0px，没有边框。包括 iOS 7 和之前版本，OS X Mavericks 及以前版本，还有 Android 设备。</p>
+<p>那这可咋办嘞？解决办法挺多，用图片啊，scale(0.5)，shadow啊等等~</p>
+<p>大家比较推荐的是页面缩放scale(0.5)，对于dpr=2的设备，在meta标签里设置viewport(scale 0.5)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;meta name=&quot;viewport&quot; content=&quot;width=640,initial-scale=0.5,maximum-scale=0.5, minimum-scale=0.5,user-scalable=no&quot;&gt;</span><br></pre></td></tr></table></figure></p>
+<p>这样，页面中的所有的border: 1px都将缩小0.5，从而达到border: 0.5px;的效果。</p>
+<p>但是这样就会有一个问题，页面布局也会被缩放，字体大小也是……</p>
+<p>不慌，这时候就可以考虑换一个单位了，嘻嘻</p>
+<h3 id="我超爱的rem————flexible-js解决移动端适配问题"><a href="#我超爱的rem————flexible-js解决移动端适配问题" class="headerlink" title="我超爱的rem————flexible.js解决移动端适配问题"></a>我超爱的rem————flexible.js解决移动端适配问题</h3><p>rem是一个css单位，角色等同于px、em等~</p>
+<p>这个单位的定义和em类似，不同的是em是相对于父元素，而rem是相对于根元素。rem定义是根元素的font-size, 以rem为单位，其数值与px的关系，需相对于根元素<html>的font-size计算，比如，设置根元素font-size=16px, 则表示1rem=16px。</html></p>
+<p>基于rem的原理，我们要做的就是: 将页面的单位全换成rem，针对不同手机屏幕尺寸和dpr动态地改变根节点html的font-size大小，使得以rem为单位的元素在不同终端上以相对一致的视觉效果呈现。</p>
+<p>这样一下就解决了上面的几个问题：</p>
+<ul>
+<li>图片模糊（根据dpr更改了容器大小）</li>
+<li>border：1px（根据dpr更改缩放比例，字体大小也不会受到影响）</li>
+<li>屏幕适配布局（根据dpr缩放）</li>
+</ul>
+<p>简直超酷~</p>
+<p>这里就差一个js去完成这事了，而flexible.js就是干这事的，它的关键步骤就是：</p>
+<ul>
+<li>获取设备的dpr</li>
+<li>动态改写<meta name="viewport">标签</li>
+<li>给<html>元素添加data-dpr属性，并且动态改写data-dpr的值</html></li>
+<li>给<html>元素添加font-size属性，并且动态改写font-size的值</html></li>
+</ul>
+<p>解释一下就是根据设备的屏幕宽度、dpr设置根元素的data-dpr和font-size, 这段JS代码要在所有资源加载之前执行，建议做内联处理。</p>
+<h3 id="还原设计稿"><a href="#还原设计稿" class="headerlink" title="还原设计稿"></a>还原设计稿</h3><p>首先，拿到一份设计稿，一般是以iphone6（dpr=2）为基准的，然后用flexible.js，就可以愉快编码啦~</p>
+<p>比如设计稿上量出一块宽高750×300px的div，这时候就转换成rem单位，公式就是：rem = px / 基准值。这个基准值就是该dpr下根元素的font-size，因为设计稿是dpr=2的，所以这个基准值是75，然后在css中的宽高尺寸等等就都换成除以75的rem就好啦~</p>
+<p>以前我觉得适配元素rem为单位，正文字体及边距什么的还是用px为单位，但是现在，就我个人体验来讲，我觉得全部用rem会很好，包括字体大小！！！</p>
+<p>最后留一个canvas的坑：做了适配之后的canvas绘出来的图案尺寸有问题，dpr越大，图案越小，需要在绘制过程中手动再次根据dpr更改图案的尺寸，具体原因还在看，waiting</p>
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <p class="footer-info">
+      © 2018 Sommer ❤ a vegetable bird in FE
+    </p>
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

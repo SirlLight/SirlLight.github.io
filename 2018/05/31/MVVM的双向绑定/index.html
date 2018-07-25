@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    MVVM的双向绑定 | 火辣辣的二毛
+  </title>
+  <meta name="description" content="vegetable bird">
+  
+  <meta name="keywords" content="
+  mvvm,双向绑定
+  ">
+  
+  <meta name="author" content="Sommer">
+
+  <meta http-equiv="Cache-Control" content="no-transform"/>
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+
+  <link rel="icon" type="image/x-icon" href="https://sirllight.github.io/img/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="https://sirllight.github.io/img/avatar.png"> <i class="fa fa-caret-down"></i></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i
+                  class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives"
+           class="header-toolbar-right"> 3 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i
+                  class="fa fa-tags"></i> Tags </a>
+        <a href="/tags"
+           class="header-toolbar-right"> 3 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">火辣辣的二毛</a>
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    Sommer
+
+    <span class="post-date float-right" title="{{moment(1527697195000).format('MMM DD, YYYY, h:mm:ss A')}}">
+      <i class="fa fa-pencil-square-o"></i>
+      {{moment(1527697195000).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>MVVM的双向绑定</h1>
+    <h3 id="相关"><a href="#相关" class="headerlink" title="相关"></a>相关</h3><p>随便联想的衍生知识点~ 大概<del>不会</del>有机会填坑</p>
+<ul>
+<li><a href="http://www.cnblogs.com/indream/p/3602348.html" target="_blank" rel="noopener">m三连：MVC、MVP和MVVM</a></li>
+<li><a href="https://www.kancloud.cn/zmwtp/vue2/149727" target="_blank" rel="noopener">vdom</a></li>
+<li><a href="https://blog.csdn.net/u010582082/article/details/70196854" target="_blank" rel="noopener">documentFragment</a></li>
+</ul>
+<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>说到双向绑定，就会想到MVVM模式。之前实习依次经历过MVC、MVP和MVVM模式，在MVC和MVP模式里，数据还只是单向绑定，即把Model绑定到View，当我们用js更新Model时，View就会自动更新，反之，不然。</p>
+<p>而MVVM模式就很不一样啦，它的viewModel大体上就是MVC里的Controller和MVP里的Presenter了。只是MVVM模式里面View和ViewModel之间没有了MVP里的界面接口，变成了直接交互，数据和视图是双向绑定的关系，双向绑定不仅拥有单向绑定的效果，还拥有单向绑定的反之效果，即如果用户更新了View，Model的数据也自动被更新了。<font size="1">（总算成功引入了双向绑定了= =）</font></p>
+<p>那么什么时候才会更新view嘞？最常见的操作就是表单输入啦~ 用户输入数据，更新了视图层，此时MVVM框架自动更新Model，那么这个数据就跟着视图的变化而变化了。</p>
+<h3 id="举个栗子"><a href="#举个栗子" class="headerlink" title="举个栗子"></a>举个栗子</h3><p>vue.js就是一个使用了MVVM模式的js库。这里来一段粗糙简陋的代码示范一下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;vm&quot;&gt;</span><br><span class="line">    &lt;input type=&quot;text&quot; v-model=&quot;obj.msg&quot;&gt;</span><br><span class="line">    &lt;p&gt;&#123;&#123; obj.msg &#125;&#125;&lt;/p&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">    new Vue(&#123;</span><br><span class="line">        el: &quot;#vm&quot;,</span><br><span class="line">        data: &#123;</span><br><span class="line">            obj: &#123;</span><br><span class="line">                msg: &quot;嘿嘿嘿&quot;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        created: function () &#123;</span><br><span class="line">            console.log(this.obj);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure></p>
+<p>效果：</p>
+<p><img src="https://sirllight.github.io/img/vue-demo.gif" alt="vue demo"></p>
+<p>双向数据绑定大概就是这个样子，就是视图（View）的变化能实时让数据模型（Model）发生变化，而数据的变化也能实时更新到视图层。分解一下这里面的操作就是双向数据绑定的基本实现流程啦~</p>
+<ul>
+<li>监听视图的变化</li>
+<li>将视图的变化更新到数据模型</li>
+<li>监听数据模型的变化</li>
+<li>将数据模型的变化更新到视图</li>
+</ul>
+<p>视图层的变化主要交互造成的，比如用户输入、点击等等。那么我们只需要监听这些交互的事件，然后在事件回调函数中，将变化的值更新到Model中，这就实现了视图层变化更新数据模型。</p>
+<p>数据模型变化的监听方式主要有三种：发布订阅模式（Backbone.js），脏数据检查（Angular.js），数据劫持（Vue.js）。</p>
+<h4 id="发布订阅模式"><a href="#发布订阅模式" class="headerlink" title="发布订阅模式"></a>发布订阅模式</h4><p>发布订阅模式也叫作观察者模式，我的理解就是，唔，举个栗子，原生js中的事件监听就是这么一种模式。触发一个事件，就是发布了一个通知，这个通知的订阅者（addEventListener）去订阅这个回调函数，就可以执行相应的操作。落到数据绑定上就是，当数据发生了变动，就发布通知，订阅者收到这个发布，就去执行相应的操作。唔，大概就这样，具体的这里不讲，扔个链接，<a href="http://www.html-js.com/article/Study-of-twoway-data-binding-JavaScript-talk-about-JavaScript-every-day" target="_blank" rel="noopener">爱看不看</a>，这里还有个js观察者模式的文章，<a href="http://www.cnblogs.com/TomXu/archive/2012/03/02/2355128.html" target="_blank" rel="noopener">依然是爱看不看</a></p>
+<h4 id="脏数据检查"><a href="#脏数据检查" class="headerlink" title="脏数据检查"></a>脏数据检查</h4><p>顾名思义，就是通过脏值检测的方式比对数据是否有变更，来决定是否更新视图，最简单的方式就是通过 setInterval() 定时轮询检测数据变动，当然Google不会这么low，angular只有在指定的事件触发时进入脏值检测，大致如下：</p>
+<ul>
+<li>DOM事件，譬如用户输入文本，点击按钮等。( ng-click )</li>
+<li>XHR响应事件 ( $http )</li>
+<li>浏览器Location变更事件 ( $location )</li>
+<li>Timer事件( $timeout , $interval )</li>
+<li>执行 $digest() 或 $apply()</li>
+</ul>
+<p>嗷，这一段是我复制粘贴的，对angular了解不深，一直<del>懒得</del>没有<del>兴趣</del>时间去了解，以后再说吧，留一个链接，<a href="https://github.com/xufei/blog/issues/10" target="_blank" rel="noopener">照旧爱看不看</a></p>
+<h4 id="数据劫持"><a href="#数据劫持" class="headerlink" title="数据劫持"></a>数据劫持</h4><p>这一个方法就是这篇文章的重点了，入门vue.js的时候有些情怀，我更愿意接触它。嗷，现在对react也有感情了，女人，就是这么感性(#^.^#)，嘻嘻。唔，说回数据劫持。</p>
+<p>ES5中对象的属性有了属性描述符，Object.defineProperty就是ES5新加的给对象属性设置描述符的方法。这个方法是真的了不起，它用下面的方式（数据描述符和存取描述符）去设置对象属性：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Object.defineProperty(obj, key,&#123;</span><br><span class="line">    value: &quot;&quot;,</span><br><span class="line">    writable: true,</span><br><span class="line">    enumerable: true,</span><br><span class="line">    configurable: true</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>除此之外，它还有get，set的存取描述符给属性提供getter和setter方法。当存在getter，setter函数时，属性的赋值操作会触发setter函数的执行，获取操作会触发getter函数的执行。用术语来讲，这样的方法叫数据劫持<font size="1">（显得十分牛逼高深的样子）</font>。举个栗子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">var info = &#123;&#125;;</span><br><span class="line">Object.defineProperty(info, &quot;name&quot;, &#123;</span><br><span class="line">    set: function (value) &#123;</span><br><span class="line">        name = value;</span><br><span class="line">        console.log(&quot;set name :&quot; + value);</span><br><span class="line">    &#125;,</span><br><span class="line">    get: function () &#123;</span><br><span class="line">        return &quot;get name :&quot; + name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line">info.name = &quot;啦啦啦&quot;;</span><br><span class="line">console.log(info.name);</span><br></pre></td></tr></table></figure></p>
+<p>效果你们自己复制一下代码，跑个js脚本自己看咯。。。唔，算了，还是截个图:</p>
+<p><img src="https://sirllight.github.io/img/definePro-demo.png" alt="Object.defineProperty demo"></p>
+<p>关于这个方法具体情况，唔，<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty" target="_blank" rel="noopener">这是一条链接，爱看不看</a>。之所以说这个方法很了不起，就是因为vue.js双向绑定最核心的方法就是它，可以打印一下vue中初始化数据的对象和我们自己用Object.defineProperty()定义的对象：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;vm&quot;&gt;</span><br><span class="line">    &lt;input type=&quot;text&quot; v-model=&quot;obj.msg&quot;&gt;</span><br><span class="line">    &lt;p&gt;&#123;&#123; obj.msg &#125;&#125;&lt;/p&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">    new Vue(&#123;</span><br><span class="line">        el: &quot;#vm&quot;,</span><br><span class="line">        data: &#123;</span><br><span class="line">            obj: &#123;</span><br><span class="line">                msg: &quot;嘿嘿嘿&quot;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        created: function () &#123;</span><br><span class="line">            console.log(this.obj);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    console.log(&quot;====&quot;);</span><br><span class="line"></span><br><span class="line">    var info = &#123;&#125;;</span><br><span class="line">    Object.defineProperty(info, &quot;name&quot;, &#123;</span><br><span class="line">        set: function (value) &#123;</span><br><span class="line">            name = value;</span><br><span class="line">            console.log(&quot;set name :&quot; + value);</span><br><span class="line">        &#125;,</span><br><span class="line">        get: function () &#123;</span><br><span class="line">            return &quot;get name :&quot; + name;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    info.name = &quot;啦啦啦&quot;;</span><br><span class="line">    console.log(info.name);</span><br><span class="line">    console.log(info);</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure></p>
+<p>效果：</p>
+<p><img src="https://sirllight.github.io/img/data-demo.png" alt="data demo"></p>
+<p>乍一眼，看起来就很像了，是吧。vue.js就是采用数据劫持结合发布订阅模式的方式，通过Object.defineProperty()来劫持各个属性的setter，getter，在数据变动时发布消息给订阅者，触发相应的监听回调来实现双向数据绑定的。</p>
+<h3 id="vue-js实现双向绑定基本思路"><a href="#vue-js实现双向绑定基本思路" class="headerlink" title="vue.js实现双向绑定基本思路"></a>vue.js实现双向绑定基本思路</h3><p>实现MVVM主要包含两个方面：数据变化更新视图，视图变化更新数据。因为view更新model可以通过事件监听去实现，比如说监听输入事件，所以关键就在于如果数据变化怎么去更新视图。这个时候就用上了上面说的数据劫持，通过Object.defineProperty()对属性设置一个setter函数，当数据改变了就会来触发这个函数，就可以在这个函数里去更新model。<br>vue.js在这个地方使用了发布订阅的模式去进行更新model的操作。因为订阅者（watcher）会有很多个，所以就有一个消息订阅器Dep来专门收集管理这些订阅者，通过“订阅”数据变动，去执行相应的更新view的操作。双向绑定基本思路就这样，现在可以来简要实现一下。</p>
+<h3 id="简要实现"><a href="#简要实现" class="headerlink" title="简要实现"></a>简要实现</h3><p>首先，用数据劫持简单实现一下我们想要的表现效果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;vm&quot;&gt;</span><br><span class="line">    &lt;input type=&quot;text&quot; id=&quot;input&quot;&gt;</span><br><span class="line">    &lt;p id=&quot;value&quot;&gt;&lt;/p&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">    var data = &#123;&#125;;</span><br><span class="line">    Object.defineProperty(data, &quot;msg&quot;, &#123;</span><br><span class="line">        set: function (value) &#123;</span><br><span class="line">            msg = value;</span><br><span class="line">            console.log(&quot;set input data :&quot; + value);</span><br><span class="line">            document.getElementById(&quot;value&quot;).innerHTML = value;</span><br><span class="line">        &#125;,</span><br><span class="line">        get: function () &#123;</span><br><span class="line">            return msg;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    document.getElementById(&quot;input&quot;).addEventListener(&quot;keyup&quot;, function (e) &#123;</span><br><span class="line">        data.msg = e.target.value;</span><br><span class="line">    &#125;);</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure></p>
+<p>效果如图：</p>
+<p><img src="https://sirllight.github.io/img/define-pro-demo.gif" alt="define-pro-demo"></p>
+<p>虽然这是我们想要得到的效果，但是通过document.getElementById获取到相应的节点对象，然后去改变节点的值，这种做法是真的很粗暴了，一点都不优雅。如果封装成一个框架，这种做法肯定是不可行的，所以我们需要一个提高性能和效率的模块去解析dom并修改dom中相应变量。</p>
+<h4 id="简单实现一个编译器Compile"><a href="#简单实现一个编译器Compile" class="headerlink" title="简单实现一个编译器Compile"></a>简单实现一个编译器Compile</h4><p>对着代码说话<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=&quot;vm&quot;&gt;</span><br><span class="line">    &lt;input type=&quot;text&quot; s-model=&quot;input&quot;&gt;</span><br><span class="line">    &#123;&#123; input &#125;&#125;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">    function Sommer (options) &#123;</span><br><span class="line">        this.data = options.data;</span><br><span class="line">        var id = options.el;</span><br><span class="line">        var dom = new Compile(document.getElementById(id), this);</span><br><span class="line">        document.getElementById(id).appendChild(dom);</span><br><span class="line">    &#125;</span><br><span class="line">    new Sommer(&#123;</span><br><span class="line">        el: &quot;vm&quot;,</span><br><span class="line">        data: &#123;</span><br><span class="line">            input: &quot;嘿嘿嘿&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">//compile.js</span><br><span class="line"></span><br><span class="line">function Compile (node, sommer) &#123;</span><br><span class="line">    return this.node2Fragment(node, sommer);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Compile.prototype = &#123;</span><br><span class="line">    //编译dom流程：</span><br><span class="line">    // 1.将挂载目标的所有子节点劫持到DocumentFragment</span><br><span class="line">    // 2.然后针对不同的节点类型进行解析数据绑定的处理</span><br><span class="line"></span><br><span class="line">    node2Fragment: function (node, sommer) &#123;</span><br><span class="line">        var _this = this,</span><br><span class="line">            child,</span><br><span class="line">            frag = document.createDocumentFragment();</span><br><span class="line"></span><br><span class="line">        while(child = node.firstChild) &#123;</span><br><span class="line">            _this.handleBind(child, sommer);</span><br><span class="line">            frag.append(child);    //append进文档片段之后，dom中的该节点会自动删除，所以child永远都是第一个子节点，直到子节点劫持完成为止</span><br><span class="line">        &#125;</span><br><span class="line">        return frag;</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    handleBind: function (node, sommer) &#123;</span><br><span class="line">        var reg = /\&#123;\&#123;(.*)\&#125;\&#125;/;   //文本插入分隔符正则匹配，vue可以通过delimiters:[&apos;$&#123;&apos;, &apos;&#125;&apos;]进行配置</span><br><span class="line"></span><br><span class="line">        //根据节点类型进行分别处理，1----元素节点，3----文本节点</span><br><span class="line">        if (node.nodeType === 1) &#123;</span><br><span class="line">            var attr = node.attributes,</span><br><span class="line">                attrLen = attr.length;</span><br><span class="line">            for (var i = 0; i &lt; attrLen; i++) &#123;</span><br><span class="line">                //解析s-model属性</span><br><span class="line">                if (attr[i].nodeName == &quot;s-model&quot;) &#123;</span><br><span class="line">                    var modelName = attr[i].nodeValue;  //获取s-model绑定的属性名</span><br><span class="line">                    node.addEventListener(&quot;input&quot;, function (e) &#123;</span><br><span class="line">                        //更改data中的相应属性，触发这个属性的set方法</span><br><span class="line">                        sommer.data[modelName] = e.target.value;</span><br><span class="line">                    &#125;);</span><br><span class="line">                    node.value = sommer.data[modelName];    //将数据赋值给节点</span><br><span class="line">                    node.removeAttribute(&quot;s-model&quot;);    //移除节点上的s-model属性</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        if (node.nodeType === 3) &#123;</span><br><span class="line">            if (reg.test(node.nodeValue)) &#123;</span><br><span class="line">                var name = RegExp.$1.trim();  //匹配到的分隔符里的字符串</span><br><span class="line">                node.nodeValue = sommer.data[name];    //将数据模型中的该属性值赋值给这个节点</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>这个地方用到了文档碎片DocumentFragment，以前看过，觉得好像没地方用，没想到用处还是挺大的，很复杂的心情。。。这段代码的作用就是将挂在的目标节点下的所有子节点转换成文档碎片进行编译操作，等编译完成之后再将碎片添加到真实的dom节点中，在性能和效率上确实有明显的提高。</p>
+<p>虽然代码注释还是很详细的，但是我在这里还是叨叨一下吧，首先，获取到真实的dom节点，然后分析节点的类型，根据不同的类型去解析绑定数据的标志，获取到绑定的变量，然后进行一些操作处理。这个地方就不截图了，效果就是实现了用s-model和双花括号绑定数据。</p>
+<h4 id="实现简单的observe"><a href="#实现简单的observe" class="headerlink" title="实现简单的observe"></a>实现简单的observe</h4><p>实现了数据绑定节点之后，就可以用数据劫持对数据进行监听了，不多说，先看代码<font size="1">（html代码没变就不拿上来了）</font>：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">function Sommer (options) &#123;</span><br><span class="line">    this.data = options.data;</span><br><span class="line">    observe(this.data);</span><br><span class="line">    var id = options.el;</span><br><span class="line">    var dom = new Compile(document.getElementById(id), this);</span><br><span class="line">    document.getElementById(id).appendChild(dom);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//observe.js</span><br><span class="line"></span><br><span class="line">//监控Sommer中data的变化</span><br><span class="line">function observe (data) &#123;</span><br><span class="line">    Object.keys(data).forEach(function(key) &#123;</span><br><span class="line">        definePro(data, key, data[key]);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function definePro (data, key, val) &#123;</span><br><span class="line">    Object.defineProperty(data, key, &#123;</span><br><span class="line">        enumerable: true,</span><br><span class="line">        configurable: true,</span><br><span class="line">        get: function() &#123;</span><br><span class="line">            return val;</span><br><span class="line">        &#125;,</span><br><span class="line">        set: function(newVal) &#123;</span><br><span class="line">            val = newVal;</span><br><span class="line">            console.log(&apos;属性&apos; + key + &apos;已经被监听了，现在值为：&apos; + newVal);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里使用数据劫持对Sommer中的data进行监听，当get和set方法触发后进行相应的操作，效果如图：</p>
+<p><img src="https://sirllight.github.io/img/observe-demo.gif" alt="observe-demo"></p>
+<p>可以看到虽然set方法触发了，但是文本节点的内容没有变化，我们接下来就要实现让绑定的文本节点同步变化，这个时候，就需要使用到发布订阅模式。</p>
+<h4 id="发布订阅模式-1"><a href="#发布订阅模式-1" class="headerlink" title="发布订阅模式"></a>发布订阅模式</h4><p><a href="https://github.com/SirlLight/mvvm" target="_blank" rel="noopener">还是先上代码</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br></pre></td><td class="code"><pre><span class="line">//watch.js</span><br><span class="line"></span><br><span class="line">function Dep () &#123;</span><br><span class="line">    this.subs = [];</span><br><span class="line">&#125;</span><br><span class="line">Dep.prototype = &#123;</span><br><span class="line">    addSub: function(sub) &#123;</span><br><span class="line">        this.subs.push(sub);</span><br><span class="line">    &#125;,</span><br><span class="line">    notify: function() &#123;</span><br><span class="line">        this.subs.forEach(function(sub) &#123;</span><br><span class="line">            sub.update();</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">function Watcher (sommer, node, name, type) &#123;</span><br><span class="line">    Dep.target = this;  //将自己赋值给了全局变量dep.target</span><br><span class="line">    this.name = name;</span><br><span class="line">    this.node = node;</span><br><span class="line">    this.sommer = sommer;</span><br><span class="line">    this.type = type;</span><br><span class="line">    this.update();</span><br><span class="line">    Dep.target = null;  //因为它是全局变量，也是 watcher 与 dep 关联的唯一桥梁，任何时刻都必须保证 Dep.target 只有一个值。</span><br><span class="line">&#125;</span><br><span class="line">Watcher.prototype = &#123;</span><br><span class="line">    update: function () &#123;</span><br><span class="line">        this.get();</span><br><span class="line">        this.node[this.type] = this.value;</span><br><span class="line">    &#125;,</span><br><span class="line">    get: function () &#123;</span><br><span class="line">        this.value = this.sommer.data[this.name];   //触发数据的get方法</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">//observe.js</span><br><span class="line"></span><br><span class="line">//监控Sommer中data的变化</span><br><span class="line">function observe (data) &#123;</span><br><span class="line">    Object.keys(data).forEach(function(key) &#123;</span><br><span class="line">        definePro(data, key, data[key]);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line">function definePro (data, key, val) &#123;</span><br><span class="line">    var dep = new Dep();</span><br><span class="line">    Object.defineProperty(data, key, &#123;</span><br><span class="line">        enumerable: true,</span><br><span class="line">        configurable: true,</span><br><span class="line">        get: function() &#123;</span><br><span class="line">            //添加订阅者watcher到订阅者集合中，JS的浏览器单线程特性，保证这个全局变量在同一个时间内只会有一个watcher使用</span><br><span class="line">            if (Dep.target) &#123;</span><br><span class="line">                dep.addSub(Dep.target);</span><br><span class="line">            &#125;</span><br><span class="line">            return val;</span><br><span class="line">        &#125;,</span><br><span class="line">        set: function(newVal) &#123;</span><br><span class="line">            val = newVal;</span><br><span class="line">            console.log(&apos;属性&apos; + key + &apos;已经被监听了，现在值为：&apos; + newVal);</span><br><span class="line">            //触发set函数后，发布者发出通知</span><br><span class="line">            dep.notify();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//compile.js</span><br><span class="line"></span><br><span class="line">function Compile (node, sommer) &#123;</span><br><span class="line">    return this.node2Fragment(node, sommer);</span><br><span class="line">&#125;</span><br><span class="line">Compile.prototype = &#123;</span><br><span class="line">    //编译dom流程：</span><br><span class="line">    // 1.将挂载目标的所有子节点劫持到DocumentFragment</span><br><span class="line">    // 2.然后针对不同的节点类型进行解析数据绑定的处理</span><br><span class="line"></span><br><span class="line">    node2Fragment: function (node, sommer) &#123;</span><br><span class="line">        var _this = this,</span><br><span class="line">            child,</span><br><span class="line">            frag = document.createDocumentFragment();</span><br><span class="line">        while(child = node.firstChild) &#123;</span><br><span class="line">            _this.handleBind(child, sommer);</span><br><span class="line">            frag.append(child);    //append进文档片段之后，dom中的该节点会自动删除，所以child永远都是第一个子节点，直到子节点劫持完成为止</span><br><span class="line">        &#125;</span><br><span class="line">        return frag;</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    handleBind: function (node, sommer) &#123;</span><br><span class="line">        var reg = /\&#123;\&#123;(.*)\&#125;\&#125;/;   //文本插入分隔符正则匹配，vue可以通过delimiters:[&apos;$&#123;&apos;, &apos;&#125;&apos;]进行配置</span><br><span class="line"></span><br><span class="line">        //根据节点类型进行分别处理，1----元素节点，3----文本节点</span><br><span class="line">        if (node.nodeType === 1) &#123;</span><br><span class="line">            var attr = node.attributes,</span><br><span class="line">                attrLen = attr.length;</span><br><span class="line">            for (var i = 0; i &lt; attrLen; i++) &#123;</span><br><span class="line">                //解析s-model属性</span><br><span class="line">                if (attr[i].nodeName == &quot;s-model&quot;) &#123;</span><br><span class="line">                    var modelName = attr[i].nodeValue;  //获取s-model绑定的属性名</span><br><span class="line">                    node.addEventListener(&quot;input&quot;, function (e) &#123;</span><br><span class="line">                        //更改data中的相应属性，触发这个属性的set方法</span><br><span class="line">                        sommer.data[modelName] = e.target.value;</span><br><span class="line">                    &#125;);</span><br><span class="line">                    //node.value = sommer.data[modelName];    //将数据赋值给节点</span><br><span class="line">                    node.removeAttribute(&quot;s-model&quot;);    //移除节点上的s-model属性</span><br><span class="line">                    new Watcher(sommer, node, modelName, &quot;value&quot;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        if (node.nodeType === 3) &#123;</span><br><span class="line">            if (reg.test(node.nodeValue)) &#123;</span><br><span class="line">                var name = RegExp.$1.trim();  //匹配到的分隔符里的字符串</span><br><span class="line">                //node.nodeValue = sommer.data[name];    //将数据模型中的该属性值赋值给这个节点</span><br><span class="line">                new Watcher(sommer, node, name, &quot;nodeValue&quot;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>再说一遍发布订阅模式吧。。。</p>
+<p>Sommer对象里的data就是我们要监听的对象，data的所有属性都拥有一个调度中心Dep，每一个挂载了data中的某个属性的节点就称为一个订阅者（watcher）。每当data中的某个属性发生了改变，那么这个属性的set函数就会被触发，在set函数里用Dep去发布通知说，诶，我这个属性xxx动了哦，你们各就各位哦，然后订阅者就闻风而动了。</p>
+<p>在watch模块里面定义了一个订阅者管理器，一个订阅者的调度中心Dep。因为订阅者会有很多个，所以需要进行统一的管理操作，它提供了添加订阅者和发布通知的方法。</p>
+<p>在compile模块里，我们给每个带绑定属性的节点生成了一个订阅者watcher，订阅者会将自己添加到相应属性的Dep中。而这个watcher都干了些啥嘞，看代码↑</p>
+<p>首先，它将自己赋值给了一个全局变量Dep.target，然后执行了update方法，这个update方法里面执行了get方法，get方法去读取了这个属性，从而触发了这个属性的get方法，回到compile里面，这个属性的get方法将watcher添加到了订阅者管理器（Dep）中，接着，在update方法里获取到了属性的值，更新了这个节点的值，更新视图，最后置空。</p>
+<p>初始化订阅者完成后，当修改了数据，触发了这个属性的set方法，发布了通知dep.notify()，就去触发了这个调度中心里各个订阅者的update方法，执行上面那段操作，去更新视图，至此，双向绑定就基本实现了。效果图，唔，上面都有。</p>
+<p>这个只是简单的一个实现，说一下究其根本的原理，实际实现vue真的十分复杂，源代码看得我头皮发麻= =</p>
+<p>这篇文章，真的是再续前缘~虽然大多数都是最近才写的⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄还是学到了很多~</p>
+<p>最后，上面那些爱看不看的，还是要看的。</p>
+<p>参考：</p>
+<ul>
+<li><a href="https://www.kancloud.cn/zmwtp/vue2/148822" target="_blank" rel="noopener">vue2.0源代码解析</a></li>
+<li><a href="https://segmentfault.com/a/1190000006599500" target="_blank" rel="noopener">剖析双向绑定</a></li>
+<li><a href="https://juejin.im/entry/5996654451882524382f43db" target="_blank" rel="noopener">流程图解双向绑定。。。我觉得是真的很有用</a></li>
+</ul>
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <p class="footer-info">
+      © 2018 Sommer ❤ a vegetable bird in FE
+    </p>
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>
